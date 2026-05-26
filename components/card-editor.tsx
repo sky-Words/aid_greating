@@ -187,23 +187,45 @@ export function CardEditor() {
   }, [])
 
   const handleShare = useCallback(async () => {
-    const shareText = `${cardState.greeting} - ${cardState.name || "من محب"}`
-    const shareUrl = typeof window !== "undefined" ? window.location.href : ""
+    if (!cardRef.current) return
 
-    if (navigator.share) {
-      try {
+    const siteUrl = typeof window !== "undefined" ? window.location.origin : ""
+    const shareText = `${cardState.greeting}\n\nانشئ بطاقتك الخاصة من هنا:\n${siteUrl}`
+
+    try {
+      // Generate the card image
+      const canvas = await html2canvas(cardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+      })
+
+      // Convert canvas to blob
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((b) => resolve(b!), "image/png")
+      })
+
+      const file = new File([blob], "eid-card.png", { type: "image/png" })
+
+      if (navigator.share && navigator.canShare({ files: [file] })) {
         await navigator.share({
           title: "بطاقة عيد الأضحى",
           text: shareText,
-          url: shareUrl,
+          files: [file],
         })
-      } catch {
+      } else if (navigator.share) {
+        await navigator.share({
+          title: "بطاقة عيد الأضحى",
+          text: shareText,
+          url: siteUrl,
+        })
+      } else {
         setShowShareDialog(true)
       }
-    } else {
+    } catch {
       setShowShareDialog(true)
     }
-  }, [cardState.greeting, cardState.name])
+  }, [cardState.greeting])
 
   const handleWhatsAppShare = useCallback(() => {
     const text = encodeURIComponent(`${cardState.greeting} - ${cardState.name || "من محب"}`)
