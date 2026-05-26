@@ -1,0 +1,910 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #10b981;
+  --primary-dark: #059669;
+  --secondary: #0f172a;
+  --text-light: #ffffff;
+  --text-muted: #9ca3af;
+  --gold: #fbbf24;
+  --gold-dark: #f59e0b;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --glass: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1f 100%);
+  min-height: 100vh;
+  color: var(--text-light);
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  direction: rtl;
+}
+
+.mobile-toggle {
+  display: none;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.9rem;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: flex;
+  }
+
+  .controls-panel {
+    display: none;
+  }
+
+  .controls-panel.open {
+    display: flex;
+  }
+}
+
+.app-header {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.main-content {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+}
+
+.controls-panel {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  padding: 32px;
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.control-group label {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.control-group input[type="text"],
+.control-group select {
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.5);
+  color: #f1f5f9;
+  font-size: 1rem;
+  font-family: 'Cairo', sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.control-group input[type="text"]:focus,
+.control-group select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+.control-group input[type="text"]::placeholder {
+  color: #64748b;
+}
+
+.control-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 14px center;
+  background-size: 18px;
+  padding-left: 44px;
+}
+
+.background-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.bg-option {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  border: 2px solid #334155;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bg-option:hover {
+  transform: scale(1.05);
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bg-option.active {
+  border-color: #10b981;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+}
+
+.toggle-group label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.toggle-group input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #10b981;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 2px solid #334155;
+}
+
+.preview-panel {
+  flex: 1;
+  min-width: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.card-container {
+  width: 400px;
+  min-height: 560px;
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Decorative elements */
+.decorative-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.moon-wrapper {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  animation: moonGlow 3s ease-in-out infinite;
+}
+
+.crescent-moon {
+  width: 70px;
+  height: 70px;
+  filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.8));
+}
+
+@keyframes moonGlow {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+.star-element {
+  position: absolute;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 1));
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.star-element svg {
+  width: 100%;
+  height: 100%;
+}
+
+.star-1 { top: 40px; left: 50px; width: 18px; height: 18px; animation-delay: 0s; }
+.star-2 { top: 90px; left: 25px; width: 14px; height: 14px; animation-delay: 0.3s; }
+.star-3 { top: 70px; right: 100px; width: 16px; height: 16px; animation-delay: 0.6s; }
+.star-4 { top: 130px; right: 40px; width: 20px; height: 20px; animation-delay: 0.9s; }
+.star-5 { top: 30px; left: 110px; width: 12px; height: 12px; animation-delay: 1.2s; }
+.star-6 { top: 150px; left: 80px; width: 10px; height: 10px; animation-delay: 1.5s; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Lantern elements */
+.lantern-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.lantern {
+  position: absolute;
+  animation: lanternSway 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.8));
+}
+
+.lantern svg {
+  width: 100%;
+  height: 100%;
+}
+
+.lantern-left {
+  bottom: 80px;
+  left: 25px;
+  width: 45px;
+  height: 60px;
+  animation-delay: 0s;
+}
+
+.lantern-right {
+  bottom: 80px;
+  right: 25px;
+  width: 45px;
+  height: 60px;
+  animation-delay: 2s;
+}
+
+@keyframes lanternSway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+/* Mosque element */
+.mosque-element {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.mosque-icon {
+  width: 150px;
+  height: 90px;
+  filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+}
+
+.card-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 560px;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+/* Gold Theme - for golden gradient cards */
+.card-content.gold-theme .eid-text {
+  color: #ffd700;
+  text-shadow: 0 2px 25px rgba(255, 215, 0, 0.6), 0 0 50px rgba(255, 215, 0, 0.5);
+}
+
+.card-content.gold-theme .recipient-name {
+  color: #ffffff;
+  text-shadow: 0 2px 15px rgba(255, 255, 255, 0.5);
+}
+
+.card-content.gold-theme .greeting-message {
+  color: #f0e6d2;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.card-content.gold-theme .from-text {
+  color: #b8b29d;
+}
+
+.card-content.gold-theme .card-footer {
+  color: #b8b29d;
+}
+
+/* Light Theme - for light gradient cards */
+.card-content.light-theme .eid-text {
+  color: #1a1a2e;
+  text-shadow: none;
+}
+
+.card-content.light-theme .recipient-name {
+  color: #0f3460;
+  text-shadow: none;
+}
+
+.card-content.light-theme .greeting-message {
+  color: #533483;
+  text-shadow: none;
+}
+
+.card-content.light-theme .from-text {
+  color: #64748b;
+}
+
+.card-content.light-theme .card-footer {
+  color: #64748b;
+}
+
+.card-content.light-theme .mosque-icon {
+  filter: drop-shadow(0 0 10px rgba(26, 26, 46, 0.5));
+}
+
+.card-content.light-theme .crescent-moon {
+  filter: drop-shadow(0 0 20px rgba(26, 26, 46, 0.6));
+}
+
+.eid-text {
+  font-family: 'Amiri', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #fbbf24;
+  text-shadow: 0 2px 25px rgba(251, 191, 36, 0.6), 0 0 50px rgba(251, 191, 36, 0.4);
+  margin-bottom: 25px;
+  letter-spacing: 6px;
+}
+
+.recipient-name {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
+}
+
+.greeting-message {
+  font-family: 'Amiri', serif;
+  font-size: 1.3rem;
+  line-height: 2.1;
+  color: #e2e8f0;
+  margin-bottom: 35px;
+  max-width: 320px;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.from-text {
+  font-size: 1rem;
+  color: #94a3b8;
+  position: absolute;
+  bottom: 80px;
+  font-weight: 500;
+}
+
+.card-footer {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Additional Card Design Variants */
+.card-container.gold-glow {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+
+.card-container.gold-glow .mosque-icon {
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+}
+
+.card-container.gold-glow .crescent-moon {
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+}
+
+.card-container.gold-glow .star-element {
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1));
+}
+
+.card-container.silver-style {
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #0a1628 100%);
+}
+
+.card-container.silver-style .card-footer {
+  color: #94a3b8;
+}
+
+.card-container.silver-style .from-text {
+  color: #94a3b8;
+}
+
+/* Light card style */
+.card-container.light-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Emerald style */
+.card-container.emerald-glow {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(20, 184, 166, 0.2);
+}
+
+.card-container.emerald-glow .mosque-icon {
+  filter: drop-shadow(0 0 20px rgba(20, 184, 166, 0.6));
+}
+
+/* Ruby style */
+.card-container.ruby-glow {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(244, 63, 94, 0.2);
+}
+
+.card-container.ruby-glow .mosque-icon {
+  filter: drop-shadow(0 0 20px rgba(244, 63, 94, 0.6));
+}
+
+/* Sapphire style */
+.card-container.sapphire-glow {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.card-container.sapphire-glow .mosque-icon {
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.6));
+}
+
+.app-footer {
+  margin-top: auto;
+  padding: 30px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.download-btn {
+  flex: 1;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+}
+
+.share-btn {
+  flex: 1;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.6);
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.share-btn:hover {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: #475569;
+  transform: translateY(-2px);
+}
+
+/* Share menu */
+.share-menu {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.share-title {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.8rem;
+  color: white;
+  font-weight: 600;
+}
+
+.share-option.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.share-option.facebook {
+  background: #1877F2;
+  color: white;
+}
+
+.share-option.instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: white;
+}
+
+.share-option.twitter {
+  background: #000000;
+  color: white;
+  border: 1px solid #333;
+}
+
+.share-option.link {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  border: 1px solid #334155;
+}
+
+.share-option:hover {
+  transform: scale(1.05);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .controls-panel {
+    width: 100%;
+    max-width: 400px;
+    padding: 24px;
+  }
+
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .preview-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-container {
+    width: 95%;
+    max-width: 400px;
+    min-height: 500px;
+    border-radius: 24px;
+  }
+
+  .card-content {
+    min-height: 500px;
+    padding: 30px 20px;
+  }
+
+  .lantern-left, .lantern-right {
+    width: 35px;
+    height: 50px;
+  }
+
+  .mosque-icon {
+    width: 100px;
+    height: 60px;
+  }
+
+  .eid-text {
+    font-size: 2.5rem;
+  }
+
+  .recipient-name {
+    font-size: 1.5rem;
+  }
+
+  .control-group input[type="text"],
+  .control-group select {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .download-btn,
+  .share-btn {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 20px 15px;
+  }
+
+  .app-header h1 {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+
+  .main-content {
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .controls-panel {
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .card-container {
+    width: 90%;
+    min-height: 450px;
+    border-radius: 20px;
+  }
+
+  .card-content {
+    min-height: 450px;
+    padding: 20px 15px;
+  }
+
+  .eid-text {
+    font-size: 2rem;
+    margin-bottom: 18px;
+    letter-spacing: 4px;
+  }
+
+  .recipient-name {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  .greeting-message {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    max-width: 280px;
+  }
+
+  .from-text {
+    font-size: 0.9rem;
+    bottom: 70px;
+  }
+
+  .card-footer {
+    font-size: 0.8rem;
+    bottom: 18px;
+  }
+
+  .control-group {
+    gap: 8px;
+  }
+
+  .control-group label {
+    font-size: 0.9rem;
+  }
+
+  .control-group input[type="text"],
+  .control-group select {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .control-group select {
+    background-position: left 12px center;
+    padding-left: 40px;
+  }
+
+  .background-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .bg-option {
+    border-radius: 12px;
+    border-width: 1.5px;
+  }
+
+  .toggle-group label {
+    font-size: 0.9rem;
+    gap: 8px;
+  }
+
+  .toggle-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .download-btn,
+  .share-btn {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  .share-menu {
+    width: 100%;
+    padding: 15px;
+    border-radius: 14px;
+  }
+
+  .share-title {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .share-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .share-option {
+    padding: 10px 6px;
+    font-size: 0.75rem;
+    border-radius: 10px;
+  }
+
+  .share-option span {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .card-container {
+    width: 85%;
+    min-height: 420px;
+  }
+
+  .card-content {
+    min-height: 420px;
+  }
+
+  .eid-text {
+    font-size: 1.8rem;
+  }
+
+  .recipient-name {
+    font-size: 1.2rem;
+  }
+
+  .greeting-message {
+    font-size: 1rem;
+  }
+
+  .moon-wrapper {
+    top: 20px;
+    right: 25px;
+  }
+
+  .crescent-moon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .star-1 { top: 30px; left: 40px; }
+  .star-2 { top: 70px; left: 20px; }
+  .star-3 { top: 60px; right: 80px; }
+  .star-4 { top: 110px; right: 30px; }
+  .star-5 { top: 25px; left: 90px; }
+  .star-6 { top: 130px; left: 70px; }
+
+  .lantern-left, .lantern-right {
+    bottom: 70px;
+    width: 30px;
+    height: 45px;
+  }
+}
