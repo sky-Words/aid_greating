@@ -221,58 +221,99 @@ function App() {
   const shareToWhatsApp = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
-
     const imageData = await generateCardImage()
-    if (imageData) {
-      const link = document.createElement('a')
-      link.download = `eid-greeting-${name || 'card'}.png`
-      link.href = imageData
-      link.click()
 
-      setTimeout(() => {
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-      }, 800)
+    if (imageData) {
+      try {
+        const response = await fetch(imageData)
+        const blob = await response.blob()
+        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
+
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            text: text
+          })
+          return
+        }
+      } catch (e) {
+        // Web Share not supported or failed
+      }
+
+      // Fallback: open WhatsApp with text
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
     }
   }
 
   const shareToFacebook = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
-
     const imageData = await generateCardImage()
-    if (imageData) {
-      const link = document.createElement('a')
-      link.download = `eid-greeting-facebook.png`
-      link.href = imageData
-      link.click()
 
-      setTimeout(() => {
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl), '_blank', 'width=600,height=400')
-      }, 800)
+    if (imageData) {
+      try {
+        const response = await fetch(imageData)
+        const blob = await response.blob()
+        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
+
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            text: text
+          })
+          return
+        }
+      } catch (e) {}
+
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl) + '&quote=' + encodeURIComponent(text), '_blank', 'width=600,height=400')
     }
   }
 
   const shareToTwitter = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
-
     const imageData = await generateCardImage()
-    if (imageData) {
-      const link = document.createElement('a')
-      link.download = `eid-greeting-twitter.png`
-      link.href = imageData
-      link.click()
 
-      setTimeout(() => {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
-      }, 800)
+    if (imageData) {
+      try {
+        const response = await fetch(imageData)
+        const blob = await response.blob()
+        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
+
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            text: text
+          })
+          return
+        }
+      } catch (e) {}
+
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
     }
   }
 
   const shareToInstagram = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
+
     if (imageData) {
+      try {
+        const response = await fetch(imageData)
+        const blob = await response.blob()
+        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
+
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            text: text
+          })
+          return
+        }
+      } catch (e) {}
+
+      // For Instagram, download image and show instructions
       const link = document.createElement('a')
       link.download = `eid-greeting-instagram.png`
       link.href = imageData
