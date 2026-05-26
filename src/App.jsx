@@ -223,30 +223,15 @@ function App() {
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    // Try Web Share API first (works on mobile)
-    if (imageData && navigator.share) {
-      try {
-        const response = await fetch(imageData)
-        const blob = await response.blob()
-        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-        await navigator.share({
-          files: [file],
-          text: text
-        })
-        return
-      } catch (e) {}
-    }
+    // Open WhatsApp Web with text
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
 
-    // Fallback: download image
+    // Also download the image for them to attach
     if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-card-${name || 'eid'}.png`
       link.href = imageData
       link.click()
-
-      setTimeout(() => {
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-      }, 500)
     }
   }
 
@@ -255,30 +240,13 @@ function App() {
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    // Try Web Share API first
-    if (imageData && navigator.share) {
-      try {
-        const response = await fetch(imageData)
-        const blob = await response.blob()
-        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-        await navigator.share({
-          files: [file],
-          text: text
-        })
-        return
-      } catch (e) {}
-    }
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl) + '&quote=' + encodeURIComponent(text), '_blank', 'width=600,height=400')
 
-    // Fallback: download image
     if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-card-${name || 'eid'}.png`
       link.href = imageData
       link.click()
-
-      setTimeout(() => {
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl), '_blank', 'width=600,height=400')
-      }, 500)
     }
   }
 
@@ -287,53 +255,20 @@ function App() {
     const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    // Try Web Share API first
-    if (imageData && navigator.share) {
-      try {
-        const response = await fetch(imageData)
-        const blob = await response.blob()
-        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-        await navigator.share({
-          files: [file],
-          text: text
-        })
-        return
-      } catch (e) {}
-    }
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
 
-    // Fallback: download image
     if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-card-${name || 'eid'}.png`
       link.href = imageData
       link.click()
-
-      setTimeout(() => {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
-      }, 500)
     }
   }
 
   const shareToInstagram = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
-    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    // Try Web Share API first
-    if (imageData && navigator.share) {
-      try {
-        const response = await fetch(imageData)
-        const blob = await response.blob()
-        const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-        await navigator.share({
-          files: [file],
-          text: text
-        })
-        return
-      } catch (e) {}
-    }
-
-    // Fallback: download image
     if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-card-${name || 'eid'}.png`
