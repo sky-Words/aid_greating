@@ -421,10 +421,7 @@ function App() {
             )}
 
             <div className={`card-content ${selectedBg.template === 'gold' ? 'gold-theme' : selectedBg.template === 'light' ? 'light-theme' : ''}`}>
-              <div className="eid-text">عيد مبارك</div>
-              <div className="recipient-name">
-                {name || 'صديقي العزيز'}
-              </div>
+              <div className="eid-top-text">عيد مبارك!</div>
               <div className="greeting-message">
                 {message}
               </div>
