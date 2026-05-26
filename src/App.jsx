@@ -220,96 +220,52 @@ function App() {
 
   const shareToWhatsApp = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
+
     const imageData = await generateCardImage()
     if (imageData) {
-      const response = await fetch(imageData)
-      const blob = await response.blob()
-      const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-
-      if (navigator.share && navigator.canShare?.({ files: [new File([blob], 'eid-card.png', { type: 'image/png' })] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            text: `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\nصنع بطاقتك العيدية بالعربية هنا: ${websiteUrl}`
-          })
-          return
-        } catch (e) {
-          // Fall back to download
-        }
-      }
-
-      // Fallback: download and open WhatsApp
       const link = document.createElement('a')
       link.download = `eid-greeting-${name || 'card'}.png`
       link.href = imageData
       link.click()
 
       setTimeout(() => {
-        const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\nصنع بطاقتك العيدية بالعربية هنا: ${websiteUrl}`
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-      }, 500)
+      }, 800)
     }
   }
 
   const shareToFacebook = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
+
     const imageData = await generateCardImage()
     if (imageData) {
-      const response = await fetch(imageData)
-      const blob = await response.blob()
-      const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            text: `عيد مبارك! ${name ? `من ${name}` : ''} - ${message}\n\nصنع بطاقتك العيدية بالعربية: ${websiteUrl}`
-          })
-          return
-        } catch (e) {}
-      }
-
-      // Fallback
       const link = document.createElement('a')
       link.download = `eid-greeting-facebook.png`
       link.href = imageData
       link.click()
 
       setTimeout(() => {
-        const shareText = `عيد مبارك! ${name ? `من ${name}` : ''} - ${message}\n\nصنع بطاقتك العيدية بالعربية: ${websiteUrl}`
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl) + '&quote=' + encodeURIComponent(shareText), '_blank', 'width=600,height=400')
-      }, 500)
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl), '_blank', 'width=600,height=400')
+      }, 800)
     }
   }
 
   const shareToTwitter = async () => {
     const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
+
     const imageData = await generateCardImage()
     if (imageData) {
-      const response = await fetch(imageData)
-      const blob = await response.blob()
-      const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            text: `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\nصنع بطاقتك العيدية بالعربية: ${websiteUrl}`
-          })
-          return
-        } catch (e) {}
-      }
-
-      // Fallback
       const link = document.createElement('a')
       link.download = `eid-greeting-twitter.png`
       link.href = imageData
       link.click()
 
       setTimeout(() => {
-        const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\nصنع بطاقتك العيدية بالعربية: ${websiteUrl}`
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
-      }, 500)
+      }, 800)
     }
   }
 
@@ -317,26 +273,11 @@ function App() {
     const websiteUrl = 'https://aid-greating.vercel.app'
     const imageData = await generateCardImage()
     if (imageData) {
-      const response = await fetch(imageData)
-      const blob = await response.blob()
-      const file = new File([blob], 'eid-card.png', { type: 'image/png' })
-
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            text: `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\nصنع بطاقتك العيدية بالعربية: ${websiteUrl}`
-          })
-          return
-        } catch (e) {}
-      }
-
-      // Fallback: download and notify
       const link = document.createElement('a')
       link.download = `eid-greeting-instagram.png`
       link.href = imageData
       link.click()
-      alert(`تم تحميل الصورة! الآن شاركها على إنستغرام من خلال تطبيق إنستغرام على هاتفك\n\nاصنع بطاقتك العيدية بالعربية: ${websiteUrl}`)
+      alert(`تم تحميل الصورة! 📸\n\nلنشرها على إنستغرام:\n1. افتح تطبيق إنستغرام\n2. أنشئ منشور جديد\n3. اختر هذه الصورة\n\n🎄 أو اصنع بطاقتك العيدية بالعربية هنا:\n${websiteUrl}`)
     }
   }
 
