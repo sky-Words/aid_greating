@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { Sparkles, TrendingUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cardTemplates, categories, type CardTemplate } from "@/lib/templates"
-import { CrescentMoon, Star, GeometricPattern } from "@/components/icons/islamic-icons"
+import { CrescentMoon, Star, GeometricPattern, FloralPattern, MoroccanPattern } from "@/components/icons/islamic-icons"
 import { cn } from "@/lib/utils"
 
 function TemplateCard({ template, index }: { template: CardTemplate; index: number }) {
@@ -61,6 +61,16 @@ function TemplateCard({ template, index }: { template: CardTemplate; index: numb
             {template.pattern === "geometric" && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <GeometricPattern className="w-full h-full text-current opacity-30" style={{ color: template.accentColor }} />
+              </div>
+            )}
+            {template.pattern === "floral" && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <FloralPattern className="w-full h-full text-current opacity-40" style={{ color: template.accentColor }} />
+              </div>
+            )}
+            {template.pattern === "moroccan" && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <MoroccanPattern className="w-full h-full text-current opacity-40" style={{ color: template.accentColor }} />
               </div>
             )}
             {template.pattern === "stars" && (

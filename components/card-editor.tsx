@@ -34,8 +34,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { cardTemplates, type CardTemplate } from "@/lib/templates"
-import { CrescentMoon, Star, GeometricPattern, Mosque, Lantern, Sheep } from "@/components/icons/islamic-icons"
+import { cardTemplates, greetingTexts, greetingCategories, type CardTemplate } from "@/lib/templates"
+import { CrescentMoon, Star, GeometricPattern, Mosque, Lantern, Sheep, FloralPattern, MoroccanPattern } from "@/components/icons/islamic-icons"
 import { SuggestedCaptions } from "@/components/viral-features"
 import { cn } from "@/lib/utils"
 
@@ -299,6 +299,18 @@ export function CardEditor() {
                         style={{ color: cardState.template.accentColor } as React.CSSProperties}
                       />
                     )}
+                    {cardState.template.pattern === "floral" && (
+                      <FloralPattern
+                        className="w-full h-full"
+                        style={{ color: cardState.template.accentColor } as React.CSSProperties}
+                      />
+                    )}
+                    {cardState.template.pattern === "moroccan" && (
+                      <MoroccanPattern
+                        className="w-full h-full"
+                        style={{ color: cardState.template.accentColor } as React.CSSProperties}
+                      />
+                    )}
                     {cardState.template.pattern === "stars" && (
                       <div className="absolute inset-0">
                         {[...Array(16)].map((_, i) => (
@@ -546,6 +558,34 @@ export function CardEditor() {
                   className="text-right h-12 text-base rounded-xl"
                   dir="rtl"
                 />
+              </div>
+
+              {/* Pre-written Greetings */}
+              <div className="space-y-3">
+                <Label className="text-sm text-muted-foreground flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  اختر نص جاهز
+                </Label>
+                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-1">
+                  {greetingTexts.map((greeting) => (
+                    <motion.button
+                      key={greeting.id}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() =>
+                        setCardState((prev) => ({ ...prev, greeting: greeting.text }))
+                      }
+                      className={cn(
+                        "px-3 py-2 text-sm rounded-full border transition-all",
+                        cardState.greeting === greeting.text
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-muted/50 border-border hover:border-primary/50 hover:bg-primary/5"
+                      )}
+                    >
+                      {greeting.text}
+                    </motion.button>
+                  ))}
+                </div>
               </div>
 
               <div className="space-y-2">
