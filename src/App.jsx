@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import html2canvas from 'html2canvas'
+import { Analytics } from '@vercel/analytics/react'
 import './App.css'
 
 const cardDesigns = [
@@ -471,6 +472,7 @@ function App() {
       <footer className="app-footer">
         <p>صنع بـ ❤️ للاحتفال بعيد الفطر</p>
       </footer>
+      <Analytics />
     </div>
   )
 }
