@@ -185,19 +185,16 @@ function App() {
   const [showMosque, setShowMosque] = useState(false)
   const [showShareMenu, setShowShareMenu] = useState(false)
   const [showControls, setShowControls] = useState(true)
+  const [isCapturing, setIsCapturing] = useState(false)
   const cardRef = useRef(null)
   const [cardImage, setCardImage] = useState(null)
 
   const handleDownload = async () => {
-    if (cardRef.current) {
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-      })
+    const imageData = await generateCardImage()
+    if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-greeting-${name || 'card'}.png`
-      link.href = canvas.toDataURL('image/png')
+      link.href = imageData
       link.click()
     }
   }
@@ -207,40 +204,62 @@ function App() {
   }
 
   const generateCardImage = async () => {
-    if (cardRef.current) {
+    if (!cardRef.current) return null
+
+    setIsCapturing(true)
+
+    // Allow time for DOM updates before capturing
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    try {
       const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: '#00000000',
+        logging: false,
+        foreignObjectRendering: true,
+        ignoreElements: (element) => {
+          // Ignore controls and share menu during capture
+          return element.closest('.controls-panel') ||
+                 element.closest('.share-menu') ||
+                 element.tagName === 'BUTTON' ||
+                 element.tagName === 'INPUT' ||
+                 element.tagName === 'SELECT'
+        }
       })
-      return canvas.toDataURL('image/png')
+      const imageData = canvas.toDataURL('image/png')
+      return imageData
+    } catch (error) {
+      console.error('Capture error:', error)
+      return null
+    } finally {
+      setIsCapturing(false)
     }
-    return null
   }
 
   const shareToWhatsApp = async () => {
-    const websiteUrl = 'https://aid-greating.vercel.app'
-    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    // Open WhatsApp Web with text
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
+    const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
 
-    // Also download the image for them to attach
+    // Download the image first
     if (imageData) {
       const link = document.createElement('a')
       link.download = `eid-card-${name || 'eid'}.png`
       link.href = imageData
       link.click()
     }
+
+    // Then open WhatsApp with text
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
   }
 
   const shareToFacebook = async () => {
-    const websiteUrl = 'https://aid-greating.vercel.app'
-    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl) + '&quote=' + encodeURIComponent(text), '_blank', 'width=600,height=400')
+    const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
 
     if (imageData) {
       const link = document.createElement('a')
@@ -248,14 +267,15 @@ function App() {
       link.href = imageData
       link.click()
     }
+
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(websiteUrl) + '&quote=' + encodeURIComponent(text), '_blank', 'width=600,height=400')
   }
 
   const shareToTwitter = async () => {
-    const websiteUrl = 'https://aid-greating.vercel.app'
-    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
     const imageData = await generateCardImage()
 
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
+    const websiteUrl = 'https://aid-greating.vercel.app'
+    const text = `عيد مبارك! ${name ? `من ${name}` : ''}\n\n${message}\n\n🎄 صنع بطاقتك العيدية بالعربية!\nجرب هنا: ${websiteUrl}`
 
     if (imageData) {
       const link = document.createElement('a')
@@ -263,11 +283,14 @@ function App() {
       link.href = imageData
       link.click()
     }
+
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
   }
 
   const shareToInstagram = async () => {
-    const websiteUrl = 'https://aid-greating.vercel.app'
     const imageData = await generateCardImage()
+
+    const websiteUrl = 'https://aid-greating.vercel.app'
 
     if (imageData) {
       const link = document.createElement('a')
@@ -393,6 +416,12 @@ function App() {
 
         <div className="preview-panel">
           <div className={`card-container ${selectedBg.template === 'gold' ? 'gold-glow' : selectedBg.id === 7 ? 'light-card' : selectedBg.id === 4 ? 'emerald-glow' : selectedBg.id === 8 ? 'sapphire-glow' : selectedBg.id === 6 ? 'ruby-glow' : ''}`} ref={cardRef} style={{ background: selectedBg.gradient }}>
+            {isCapturing && (
+              <div className="card-capturing-overlay">
+                <div className="spinner"></div>
+                <div className="capturing-text">جاري إنشاء الصورة...</div>
+              </div>
+            )}
             {showMoon && (
               <div className="decorative-elements">
                 <div className="moon-wrapper">
